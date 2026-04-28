@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahmed Salah | Cyber Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f111a;
+            --card-bg: rgba(36, 40, 59, 0.75);
+            --text-main: #c0caf5;
+            --text-muted: #9aa5ce;
+            --accent-green: #7acc8c;
+            --success-green: #9ece6a;
+            --root-red: #BF616A;
+            --border-color: rgba(65, 72, 104, 0.5);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        #matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            opacity: 0.15;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1, h2, h3, .mono { font-family: 'Fira Code', monospace; }
+
+        header {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 60px;
+            padding: 40px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-img-container {
+            position: relative;
+        }
+
+        .profile-img-container::before {
+            content: '';
+            position: absolute;
+            top: -5px; left: -5px; right: -5px; bottom: -5px;
+            border: 2px dashed var(--accent-green);
+            border-radius: 12px;
+            animation: spin 15s linear infinite;
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .profile-img {
+            width: 160px;
+            height: 160px;
+            border-radius: 10px;
+            object-fit: cover;
+            position: relative;
+            z-index: 1;
+            filter: grayscale(60%) contrast(1.1);
+            transition: 0.5s ease;
+        }
+
+        .profile-img:hover {
+            filter: grayscale(0%);
+            transform: scale(1.03);
+        }
+
+        .header-text h1 {
+            font-size: 2.8rem;
+            margin: 0;
+            color: #fff;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid var(--accent-green);
+            width: 0;
+            animation: typing 2s steps(20, end) forwards, blink 0.75s step-end infinite;
+        }
+
+        @keyframes typing { to { width: 100%; } }
+        @keyframes blink { 50% { border-color: transparent; } }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--accent-green);
+            margin-top: 10px;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 1.5s;
+        }
+
+        .links {
+            margin-top: 20px;
+            display: flex;
+            gap: 12px;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 2s;
+        }
+
+        .links a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.85rem;
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(15, 17, 26, 0.6);
+            font-family: 'Fira Code', monospace;
+        }
+
+        .links a:hover {
+            background: var(--accent-green);
+            color: var(--bg-color);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(122, 204, 140, 0.2);
+        }
+
+        .hidden-section {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform;
+        }
+
+        .show-section {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        section {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 35px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid transparent;
+            transition: all 0.4s ease;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        section:hover {
+            border-left: 4px solid var(--accent-green);
+            transform: translateX(10px);
+            box-shadow: -5px 15px 35px rgba(0,0,0,0.4);
+            background: rgba(36, 40, 59, 0.85);
+        }
+
+        section h3 {
+            color: var(--accent-green);
+            font-size: 1.2rem;
+            margin-top: 0;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+        }
+
+        section h3::before {
+            content: 'root@ahmed:~# ';
+            color: var(--root-red);
+            font-size: 0.9rem;
+            margin-right: 10px;
+        }
+
+        .skill-group { margin-bottom: 25px; }
+        .skill-group h4 { color: #fff; margin-bottom: 15px; font-size: 1rem; }
+        
+        .skill-item { margin-bottom: 15px; }
+        .skill-info { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 5px; color: var(--text-muted); }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(15, 17, 26, 0.8);
+            border-radius: 3px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .progress {
+            height: 100%;
+            background: var(--accent-green);
+            width: 0;
+            transition: width 1.5s cubic-bezier(0.1, 0.5, 0.1, 1);
+        }
+
+        .project-card {
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background: rgba(15, 17, 26, 0.5);
+            transition: 0.3s ease;
+        }
+
+        .project-card:hover {
+            border-color: var(--text-muted);
+            background: rgba(15, 17, 26, 0.8);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .project-header strong { font-size: 1.1rem; color: #fff; }
+        
+        .tag {
+            font-size: 0.75rem;
+            background: rgba(158, 206, 106, 0.1);
+            color: var(--success-green);
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(158, 206, 106, 0.3);
+            font-family: 'Fira Code', monospace;
+        }
+
+        .tag.wireshark {
+            background: rgba(122, 204, 140, 0.1);
+            color: var(--accent-green);
+            border-color: rgba(122, 204, 140, 0.3);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            padding-bottom: 40px;
+            color: var(--text-muted);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+        }
+
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        @media (max-width: 600px) {
+            header { flex-direction: column; text-align: center; }
+            .header-text h1 { font-size: 2rem; border-right: none; white-space: normal; animation: none; width: auto; }
+            .links { justify-content: center; }
+            .project-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="matrix-bg"></canvas>
+
+<div class="container">
+    <header>
+        <div class="profile-img-container">
+            <img src="ahmed.jpg" alt="Ahmed Salah" class="profile-img">
+        </div>
+        <div class="header-text">
+            <h1>Ahmed Salah</h1>
+            <div class="subtitle mono">Computer Engineering Student | Aspiring Penetration Tester</div>
+            <div class="links">
+                <a href="https://www.linkedin.com/in/ahmed-salah-b3241a392/" target="_blank">LinkedIn</a>
+                <a href="https://github.com/thisisAhmedSalah" target="_blank">GitHub</a>
+                <a href="mailto:as5652478@gmail.com">Email</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hidden-section">
+        <h3>cat profile.txt</h3>
+        <p>Focused on <b>Offensive Security</b> and low-level system internals. I blend my Computer Engineering background with practical penetration testing methodologies. Passionate about understanding how systems communicate, finding their breaking points, and documenting the journey.</p>
+    </section>
+
+    <section class="hidden-section">
+        <h3>./show_skills.sh</h3>
+        
+        <div class="skill-group">
+            <h4>System & Network Fundamentals</h4>
+            <div class="skill-item">
+                <div class="skill-info"><span>Linux & Windows CLI</span><span>90%</span></div>
+                <div class="progress-bar"><div class="progress" data-width="90%"></div></div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-info"><span>TCP/IP & OSI Architecture</span><span>85%</span></div>
+                <div class="progress-bar"><div class="progress" data-width="85%"></div></div>
+            </div>
+        </div>
+
+        <div class="skill-group">
+            <h4>Security Arsenal</h4>
+            <div class="skill-item">
+                <div class="skill-info"><span>Wireshark & Packet Analysis</span><span>80%</span></div>
+                <div class="progress-bar"><div class="progress" data-width="80%"></div></div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-info"><span>Nmap & Reconnaissance</span><span>85%</span></div>
+                <div class="progress-bar"><div class="progress" data-width="85%"></div></div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-info"><span>Burp Suite & Web Exploitation</span><span>75%</span></div>
+                <div class="progress-bar"><div class="progress" data-width="75%"></div></div>
+            </div>
+        </div>
+
+        <div class="skill-group">
+            <h4>Programming & Scripting</h4>
+            <div class="skill-item">
+                <div class="skill-info"><span>C / C++ (Systems Focus)</span><span>70%</span></div>
+                <div class="progress-bar"><div class="progress" data-width="70%"></div></div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-info"><span>Bash Scripting & Python</span><span>75%</span></div>
+                <div class="progress-bar"><div class="progress" data-width="75%"></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="hidden-section">
+        <h3>ls -la /projects</h3>
+        
+        <div class="project-card">
+            <div class="project-header">
+                <strong>HTB: Junior Cybersecurity Analyst</strong>
+                <span class="tag">Completed</span>
+            </div>
+            <p>Intensive hands-on training covering the full penetration testing kill-chain. Modules included active/passive reconnaissance, web application attacks, and detailed vulnerability reporting.</p>
+        </div>
+
+        <div class="project-card">
+            <div class="project-header">
+                <strong>OverTheWire: Bandit Wargames</strong>
+                <span class="tag">Completed</span>
+            </div>
+            <p>Practical application of Linux security. Solved progressively difficult challenges requiring advanced command-line problem solving, file system navigation, and privilege escalation.</p>
+        </div>
+
+        <div class="project-card">
+            <div class="project-header">
+                <strong>Network Traffic Analysis Lab</strong>
+                <span class="tag wireshark">Wireshark Focus</span>
+            </div>
+            <p>Deep-dive into network protocols using <b>Wireshark</b>. Extracted credentials from raw `.pcap` files, analyzed TCP handshakes, identified plaintext protocol vulnerabilities (HTTP/FTP), and traced attack signatures.</p>
+        </div>
+
+        <div class="project-card">
+            <div class="project-header">
+                <strong>Technical Write-ups & Methodology</strong>
+                <span class="tag wireshark">Documentation</span>
+            </div>
+            <p>Maintained a structured Obsidian vault utilizing Markdown to document CTF solutions, command syntaxes, and attack vectors, demonstrating strong communication and reporting skills.</p>
+        </div>
+    </section>
+
+    <section class="hidden-section">
+        <h3>whoami --education</h3>
+        <ul>
+            <li style="margin-bottom: 15px;">
+                <strong style="color: #fff;">B.Sc. Computer Engineering</strong><br>
+                <span style="color: var(--text-muted); font-size: 0.9rem;">Currently enrolled. Relevant coursework: Data Structures, Algorithms, Computer Architecture.</span>
+            </li>
+            <li>
+                <strong style="color: #fff;">CS:APP (Computer Systems: A Programmer's Perspective)</strong><br>
+                <span style="color: var(--text-muted); font-size: 0.9rem;">Self-study focus on memory management, hardware-software interface, and low-level system design.</span>
+            </li>
+        </ul>
+    </section>
+
+    <section class="hidden-section">
+        <h3>traceroute roadmap</h3>
+        <ul>
+            <li style="color: var(--text-muted); margin-bottom: 10px;">[1] Mastering Internal Networks & Active Directory.</li>
+            <li style="color: var(--text-muted); margin-bottom: 10px;">[2] Target: <b>CPTS</b> (Certified Penetration Testing Specialist).</li>
+            <li style="color: var(--text-muted);">[3] Target: <b>OSCP</b> (Offensive Security Certified Professional).</li>
+        </ul>
+    </section>
+
+    <footer class="hidden-section">
+        <p>CONNECTION_TERMINATED // 2026 // CODED_WITH_VSC</p>
+    </footer>
+</div>
+
+<script>
+    const canvas = document.getElementById('matrix-bg');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const chars = '01'.split('');
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = [];
+
+    for (let x = 0; x < columns; x++) {
+        drops[x] = 1;
+    }
+
+    function drawMatrix() {
+        ctx.fillStyle = 'rgba(15, 17, 26, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = '#7acc8c';
+        ctx.font = fontSize + 'px Fira Code';
+
+        for (let i = 0; i < drops.length; i++) {
+            const text = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+        }
+    }
+
+    setInterval(drawMatrix, 50);
+
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.15
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show-section');
+                
+                const progressBars = entry.target.querySelectorAll('.progress');
+                progressBars.forEach(bar => {
+                    const width = bar.getAttribute('data-width');
+                    bar.style.width = width;
+                });
+
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.hidden-section').forEach((section) => {
+        observer.observe(section);
+    });
+</script>
+
+</body>
+</html>
